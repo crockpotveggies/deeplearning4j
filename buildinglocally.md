@@ -47,14 +47,48 @@ GPU options:
 
 #### Linux
 
-**Ubuntu**
-Assuming you are using Ubuntu as your flavor of Linux and you are running as a non-root user, follow these steps to install prerequisite software:
+#### Ubuntu Linux 15.10
 
-```
-sudo apt-get purge maven maven2 maven3
-sudo add-apt-repository ppa:natecarlson/maven3
+```bash
+wget http://developer.download.nvidia.com/compute/cuda/7.5/Prod/local_installers/cuda-repo-ubuntu1504-7-5-local_7.5-18_amd64.deb
+sudo dpkg -i cuda-repo-ubuntu1504-7-5-local_7.5-18_amd64.deb
 sudo apt-get update
-sudo apt-get install maven build-essentials cmake libgomp1
+sudo apt-get install maven
+# sudo apt-get install cuda
+sudo apt-get install cmake
+sudo apt-get install gcc-4.9
+sudo apt-get install g++-4.9
+sudo apt-get install git
+git clone https://github.com/deeplearning4j/libnd4j
+cd libnd4j/
+export LIBND4J_HOME=~/libnd4j/
+sudo rm /usr/bin/gcc
+sudo rm /usr/bin/g++
+sudo ln -s /usr/bin/gcc-4.9 /usr/bin/gcc
+sudo ln -s /usr/bin/g++-4.9 /usr/bin/g++
+./buildnativeoperations.sh
+./buildnativeoperations.sh -c cuda -сс YOUR_DEVICE_ARCH
+```
+#### Ubuntu Linux 16.04
+
+```bash
+sudo apt install maven cmake
+# sudo apt install nvidia-cuda-dev nvidia-cuda-toolkit nvidia-361
+export TRICK_NVCC=YES
+./buildnativeoperations.sh
+./buildnativeoperations.sh -c cuda -сс YOUR_DEVICE_ARCH
+```
+
+The standard development headers are needed.
+
+#### CentOS 6
+
+```bash
+yum install centos-release-scl-rh epel-release
+yum install devtoolset-3-toolchain maven30 cmake3 git
+scl enable devtoolset-3 maven30 bash
+./buildnativeoperations.sh
+./buildnativeoperations.sh -c cuda -сс YOUR_DEVICE_ARCH
 ```
 
 #### OS X
